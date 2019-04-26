@@ -8,7 +8,7 @@ const getUsers = (req, res) => {
   customerdetails.findAll().then(users => {
     console.log("All users:", JSON.stringify(users, null, 4));
     // projectStatus.AddProject();
-    res.status(200);
+    res.status(200).send(JSON.stringify(users, null, 4));
   });
 };
 
