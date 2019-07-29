@@ -311,13 +311,16 @@ const sendEmail = async (object)=>{
   return new Promise((resolve,reject)=>{
   var transporter = nodemailer.createTransport({
     service: 'gmail',
-    port: 587,
-    secure: false,
+    port: 465,
+    secure: true,
+    secureConnection: true,
     auth: {
            user: 'csstcs2@gmail.com',
            pass: 'qwerty@123'
        },
-  
+       tls: {
+        rejectUnauthorized: false
+    }
    });
    const mailOptions = {
     from: 'csstcs2@gmail.com', // sender address
@@ -333,6 +336,7 @@ const sendEmail = async (object)=>{
  });
 })
 }
+
 module.exports = {
   getUsers,
   getUserById,
