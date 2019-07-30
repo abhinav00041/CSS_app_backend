@@ -164,9 +164,6 @@ const createCss = (req, res) => {
 const submitCss = (req, res) => {
   console.log(req.body);
   async.map(req.body, function(object, cb) {
-    (async function () {
-      await sendEmail().catch((err)=>{console.log(err)});
-    }())
     const { projectid, userid, feedback } = object;
     cssreview
       .findAll({
@@ -219,6 +216,9 @@ const submitCss = (req, res) => {
   }, function(error, results) {
     if (error) return res.status(500).send(error);
     console.log(results);
+    (async function () {
+      await sendEmail(req.body).catch((err)=>{console.log(err)});
+    }())
     res.send(results);
   });
 
@@ -322,12 +322,26 @@ const sendEmail = async (object)=>{
         rejectUnauthorized: false
     }
    });
+  let projectlist ='';
+   object.forEach((el)=>{
+    projectlist += `<br><h1>${el.projectid} | ${el.projectname}  |  ${el.CalculatedValue}</h1><br>`
+   })
    const mailOptions = {
     from: 'csstcs2@gmail.com', // sender address
     to: 'ktyagi788@gmail.com', // list of receivers
-    subject: 'Subject of your email', // Subject line
-    html: '<p>Your html here</p>'// plain text body
+    subject: 'TCS Customer satisfaction feedback form Submitted by '+object[0].UserName, // Subject line
+    html:`<body>
+    <h1>Hi Dear,</h1><br>
+    <h2>Mr. ${object[0].UserName}  have submitted TCS CSS feedback form for below                   project list :- </h2>
+    <h3>ProjectId | ProjectName  |      Calculated Value   </h3>
+    ${projectlist}
+    <h3>User data</h3>
+    <p><strong>User Name:</strong>${object[0].UserName}</p>
+    <p><strong>Submitted Date:</strong>${new Date().toLocaleDateString()}</p>
+    <p><strong>Time:</strong>${new Date().toLocaleTimeString()}</p>
+</body>`// plain text body
   };
+  console.log(mailOptions);
   transporter.sendMail(mailOptions, function (err, info) {
     if(err)
       reject(err)
