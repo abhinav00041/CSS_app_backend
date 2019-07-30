@@ -324,16 +324,16 @@ const sendEmail = async (object)=>{
    });
   let projectlist ='';
    object.forEach((el)=>{
-    projectlist += `<br><h1>${el.projectid} | ${el.projectname}  |  ${el.CalculatedValue}</h1><br>`
+    projectlist += `<br><h3>${el.projectid} | ${el.projectname}  |  ${el.CalculatedValue}</h3><br>`
    })
    const mailOptions = {
     from: 'csstcs2@gmail.com', // sender address
-    to: 'ktyagi788@gmail.com', // list of receivers
+    to: 'ktyagi788@gmail.com;roshan1.j@tcs.com', // list of receivers
     subject: 'TCS Customer satisfaction feedback form Submitted by '+object[0].UserName, // Subject line
     html:`<body>
-    <h1>Hi Dear,</h1><br>
-    <h2>Mr. ${object[0].UserName}  have submitted TCS CSS feedback form for below                   project list :- </h2>
-    <h3>ProjectId | ProjectName  |      Calculated Value   </h3>
+    <h3>Hi Dear,</h3><br>
+    <h3>Mr. ${object[0].UserName}  have submitted TCS CSS feedback form for below                   project list :- </h3>
+    <h2>ProjectId | ProjectName  |      Calculated Value   </h2>
     ${projectlist}
     <h3>User data</h3>
     <p><strong>User Name:</strong>${object[0].UserName}</p>
